@@ -5,7 +5,9 @@ import com.project.sensor.entity.DeviceEntity;
 public class Device {
     private Long id;
     private Float temperature;
+
     private Float gas;
+    private Float damp;
     private User user;
 
     public Device() {}
@@ -14,6 +16,7 @@ public class Device {
         this.id = deviceEntity.getId();
         this.temperature = deviceEntity.getTemperature();
         this.gas = deviceEntity.getGas();
+        this.damp = deviceEntity.getDamp();
         this.user = User.toModel(deviceEntity.getUser());
     }
 
@@ -52,5 +55,13 @@ public class Device {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Float getDamp() {
+        return damp;
+    }
+
+    public void setDamp(Float damp) {
+        this.damp = damp;
     }
 }

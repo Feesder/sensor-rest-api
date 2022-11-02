@@ -10,13 +10,15 @@ public class DeviceEntity {
     private long id;
     private float temperature;
     private float gas;
+    private float damp;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     public DeviceEntity() {}
 
-    public DeviceEntity(long id, float temperature, float gas) {
+    public DeviceEntity(long id, float temperature, float gas, float damp) {
         this.id = id;
         this.temperature = temperature;
         this.gas = gas;
@@ -52,5 +54,13 @@ public class DeviceEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public float getDamp() {
+        return damp;
+    }
+
+    public void setDamp(float damp) {
+        this.damp = damp;
     }
 }

@@ -1,5 +1,6 @@
 package com.project.sensor.model;
 
+import com.project.sensor.entity.DeviceEntity;
 import com.project.sensor.entity.UserEntity;
 
 public class User {

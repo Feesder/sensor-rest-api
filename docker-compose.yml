@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    container_name: mysqldb
+    restart: always
+    environment:
+      MYSQL_DATABASE: sensor
+      MYSQL_ROOT_PASSWORD: 125125eraA!
+    ports:
+      - 3307:3306
+
+  app:
+    build: ./
+    container_name: 'java-app'
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 125125eraA!
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysqldb
+    ports:
+      - 8080:8080
