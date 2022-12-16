@@ -7,6 +7,7 @@ import com.project.sensor.repository.DeviceRepository;
 import com.project.sensor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class DeviceService {
@@ -25,6 +26,14 @@ public class DeviceService {
 
     public Device getDevice(Long id) {
         return Device.toModel(deviceRepository.findById(id).get());
+    }
+
+    public Device putDevice(Long id, Float temperature, Float gas, Float damp) {
+        DeviceEntity device = deviceRepository.findById(id).get();
+        device.setGas(gas);
+        device.setTemperature(temperature);
+        device.setDamp(damp);
+        return Device.toModel(deviceRepository.save(device));
     }
 
     public Device putDevice(Long id, DeviceEntity deviceEntity) {
