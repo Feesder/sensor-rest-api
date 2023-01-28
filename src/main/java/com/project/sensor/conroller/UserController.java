@@ -1,12 +1,14 @@
 package com.project.sensor.conroller;
 
 import com.project.sensor.entity.UserEntity;
-import com.project.sensor.exception.UserAlreadyExistException;
 import com.project.sensor.exception.UserNotFoundException;
 import com.project.sensor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -18,8 +20,19 @@ public class UserController {
     @GetMapping
     public ResponseEntity getOneUser(@RequestParam Long id) {
         try {
-            System.out.println(id);
             return ResponseEntity.ok().body(userService.findById(id));
+        } catch(UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity getUserByRefresh(@CookieValue(name = "REFRESH-TOKEN") Cookie cookie, HttpServletResponse response) {
+        try {
+            return ResponseEntity.ok().body(userService.findByToken(cookie.getValue(), response));
         } catch(UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {

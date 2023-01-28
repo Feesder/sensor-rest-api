@@ -1,5 +1,6 @@
 package com.project.sensor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.sensor.entity.DeviceEntity;
 import com.project.sensor.entity.ReportEntity;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class Report {
     private Long id;
+    @JsonIgnore
     private DeviceEntity device;
     private Integer temperature;
     private Integer gas;

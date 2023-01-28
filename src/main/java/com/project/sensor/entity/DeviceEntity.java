@@ -1,5 +1,7 @@
 package com.project.sensor.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,7 +14,8 @@ public class DeviceEntity {
     private Long id;
 
     @Column(name = "active")
-    private Boolean isActive;
+    @Type(type = "numeric_boolean")
+    private Boolean active;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,20 +38,20 @@ public class DeviceEntity {
         this.id = id;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public UserEntity getUser() {
         return user;
     }
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
     }
 
     public List<ReportEntity> getReports() {
@@ -59,5 +62,11 @@ public class DeviceEntity {
         this.reports = reports;
     }
 
+    public PlaceEntity getPlace() {
+        return place;
+    }
 
+    public void setPlace(PlaceEntity place) {
+        this.place = place;
+    }
 }

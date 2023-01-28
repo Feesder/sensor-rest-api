@@ -2,9 +2,11 @@ package com.project.sensor.service;
 
 import com.project.sensor.entity.RoleEntity;
 import com.project.sensor.entity.UserEntity;
+import com.project.sensor.exception.TokenNotExist;
 import com.project.sensor.exception.UserAlreadyExistException;
 import com.project.sensor.exception.UserNotFoundException;
 import com.project.sensor.exception.WrongPasswordException;
+import com.project.sensor.model.authorization.JwtTokenResponse;
 import com.project.sensor.model.authorization.RegistrationResponse;
 import com.project.sensor.model.User;
 import com.project.sensor.repository.DeviceRepository;
@@ -85,10 +87,23 @@ public class UserService {
 
     public User findById(Long id) throws UserNotFoundException {
         UserEntity user = userRepository.findById(id).get();
+
         if(user == null) {
             throw new UserNotFoundException("Пользователь не найден");
         }
         return User.toModel(user);
+    }
+
+    public JwtTokenResponse findByToken(String token, HttpServletResponse response) throws UserNotFoundException, TokenNotExist {
+        if(token == null) {
+            throw new TokenNotExist("Токен не существует");
+        }
+
+        String user = jwtTokenProvider.getUser(token);
+        UserEntity userEntity = userRepository.findByUser(user);
+        return JwtTokenResponse.toModel(userEntity,
+                jwtTokenProvider.createAccessToken(userEntity.getUser(), response),
+                jwtTokenProvider.createRefreshToken(userEntity.getUser(), response));
     }
 
     public UserEntity findByUser(String user) throws UserNotFoundException {

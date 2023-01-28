@@ -18,7 +18,8 @@ public class ReportController {
         try {
             return ResponseEntity.ok().body(reportService.addReport(reportEntity, deviceId));
         } catch(Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
 

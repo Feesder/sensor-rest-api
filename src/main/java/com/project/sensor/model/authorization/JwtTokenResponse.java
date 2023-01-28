@@ -17,6 +17,14 @@ public class JwtTokenResponse {
         this.user = user;
     }
 
+    public static JwtTokenResponse toModel(UserEntity userEntity, String accessToken, String refreshToken) {
+        return new JwtTokenResponse(
+                User.toModel(userEntity),
+                accessToken,
+                refreshToken
+        );
+    }
+
     public String getAccessToken() {
         return accessToken;
     }

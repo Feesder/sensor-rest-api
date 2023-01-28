@@ -15,18 +15,28 @@ public class DeviceController {
     private DeviceService deviceService;
 
     @PostMapping
-    public ResponseEntity addDevice(@RequestBody DeviceEntity entity, @RequestParam Long userId) {
+    public ResponseEntity addDevice(@RequestBody DeviceEntity entity, @RequestParam Long userId, @RequestParam Long placeId) {
         try {
-            return ResponseEntity.ok().body(deviceService.addDevice(entity, userId));
+            return ResponseEntity.ok().body(deviceService.addDevice(entity, userId, placeId));
         } catch(Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
 
-    @GetMapping
+    @GetMapping(params = {"id"})
     public ResponseEntity getDevice(@RequestParam Long id) {
         try {
             return ResponseEntity.ok().body(deviceService.getDevice(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Такое устройство не существует");
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getAllDevice() {
+        try {
+            return ResponseEntity.ok().body(deviceService.getAllDevice());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Такое устройство не существует");
         }
