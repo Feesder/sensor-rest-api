@@ -41,6 +41,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/refresh")
+    public ResponseEntity getUserByRefresh(@RequestParam String value, HttpServletResponse response) {
+        try {
+            return ResponseEntity.ok().body(userService.findByToken(value, response));
+        } catch(UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
+    }
+
     @PutMapping
     public ResponseEntity updateUser(@RequestParam Long id, @RequestBody UserEntity userEntity) {
         try {
