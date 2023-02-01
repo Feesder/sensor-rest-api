@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/refresh")
+    @GetMapping(name = "/refresh", params = { "value" })
     public ResponseEntity getUserByRefresh(@RequestParam String value, HttpServletResponse response) {
         try {
             return ResponseEntity.ok().body(userService.findByToken(value, response));
