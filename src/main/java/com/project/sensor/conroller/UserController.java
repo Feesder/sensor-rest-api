@@ -41,8 +41,8 @@ public class UserController {
         }
     }
 
-    @GetMapping(name = "/refresh", params = { "value" })
-    public ResponseEntity getUserByRefresh(@RequestParam String value, HttpServletResponse response) {
+    @GetMapping("/refresh/{value}")
+    public ResponseEntity getUserByRefresh(@PathVariable String value, HttpServletResponse response) {
         try {
             return ResponseEntity.ok().body(userService.findByToken(value, response));
         } catch(UserNotFoundException e) {
