@@ -20,8 +20,7 @@ public class SensorApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry
 						.addMapping("/**")
-						.allowedOrigins("*")
-						.allowCredentials(true);
+						.allowedOrigins("*");
 			}
 		};
 	}
