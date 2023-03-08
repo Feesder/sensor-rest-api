@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity getUserByRefresh(@PathVariable String value, HttpServletResponse response) {
         try {
             return ResponseEntity.ok().body(userService.findByToken(value, response));
-        } catch(UserNotFoundException e) {
+        } catch(TokenNotExist e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
             e.printStackTrace();
