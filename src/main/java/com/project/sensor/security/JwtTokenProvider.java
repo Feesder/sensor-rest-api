@@ -107,6 +107,7 @@ public class JwtTokenProvider {
         Cookie cookie = getToken(token, eToken);
         cookie.setPath(getCookiePath());
         cookie.setHttpOnly(true);
+        http.setHeader("Set-Cookie", "promo_shown=1; SameSite=Strict");
         http.addCookie(cookie);
     }
 
