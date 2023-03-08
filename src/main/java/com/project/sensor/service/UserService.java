@@ -95,7 +95,7 @@ public class UserService {
         return User.toModel(user);
     }
 
-    public JwtTokenResponse findByToken(String token, HttpServletResponse response) throws UserNotFoundException, TokenNotExist {
+    public JwtTokenResponse findByToken(String token, HttpServletResponse response) throws TokenNotExist {
         if(token == null) {
             throw new TokenNotExist("Токен не существует");
         }
