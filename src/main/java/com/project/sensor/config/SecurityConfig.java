@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/**", "/user/refresh", "/user/refresh/**").permitAll()
+                .antMatchers("/api/v1/auth/**", "/user/refresh").permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
