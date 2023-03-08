@@ -33,7 +33,9 @@ public class UserController {
     @GetMapping("/refresh")
     public ResponseEntity getUserByRefresh(@CookieValue(name = "REFRESH-TOKEN") Cookie cookie, HttpServletResponse response) {
         try {
-            return ResponseEntity.ok().body(cookie.getValue());
+            return ResponseEntity.ok().body(userService.findByToken(cookie.getValue(), response));
+        } catch(TokenNotExist e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Произошла ошибка");
