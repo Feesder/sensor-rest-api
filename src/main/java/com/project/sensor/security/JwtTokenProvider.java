@@ -107,6 +107,7 @@ public class JwtTokenProvider {
         Cookie cookie = getToken(token, eToken);
         cookie.setPath(getCookiePath());
         cookie.setHttpOnly(true);
+        http.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=strict");
         http.addCookie(cookie);
     }
 
