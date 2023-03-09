@@ -4,12 +4,11 @@ import com.project.sensor.entity.UserEntity;
 import com.project.sensor.exception.TokenNotExist;
 import com.project.sensor.exception.UserNotFoundException;
 import com.project.sensor.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")

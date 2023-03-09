@@ -27,10 +27,6 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    public enum EToken {
-        ACCESS_TOKEN, REFRESH_TOKEN
-    }
-
     @Value("${jwt.token.secret}")
     private String secret;
 
@@ -70,7 +66,7 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createAccessToken(String user, HttpServletResponse http) {
+    public String createAccessToken(String user) {
         Claims claims = Jwts.claims().setSubject(user);
         claims.put("roles", getRoleNames(userRepository.findByUser(user).getRoles()));
         Date now = new Date();
@@ -81,12 +77,11 @@ public class JwtTokenProvider {
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-        setToken(token, http, EToken.ACCESS_TOKEN);
 
         return token;
     }
 
-    public String createRefreshToken(String user, HttpServletResponse http) {
+    public String createRefreshToken(String user) {
         Claims claims = Jwts.claims().setSubject(user);
         claims.put("roles", getRoleNames(userRepository.findByUser(user).getRoles()));
         Date now = new Date();
@@ -97,29 +92,8 @@ public class JwtTokenProvider {
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-        setToken(token, http, EToken.REFRESH_TOKEN);
 
         return token;
-    }
-
-    public void setToken(String token, HttpServletResponse http, EToken eToken) {
-        Cookie cookie = getToken(token, eToken);
-        cookie.setPath(getCookiePath());
-        cookie.setHttpOnly(true);
-        cookie.setComment("Strict");
-        http.addCookie(cookie);
-    }
-
-    private Cookie getToken(String token, EToken eToken) {
-        Cookie cookie;
-        if(eToken.equals(EToken.REFRESH_TOKEN)) {
-            cookie = new Cookie(getRefreshCookieName(), token);
-            cookie.setMaxAge(getRefreshExpirationCookie());
-        } else {
-            cookie = new Cookie(getAccessCookieName(), token);
-            cookie.setMaxAge(getAccessExpirationCookie());
-        }
-        return cookie;
     }
 
     public Authentication getAuthentication(String token) {

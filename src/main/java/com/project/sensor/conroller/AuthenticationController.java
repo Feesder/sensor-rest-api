@@ -6,11 +6,10 @@ import com.project.sensor.exception.UserNotFoundException;
 import com.project.sensor.exception.WrongPasswordException;
 import com.project.sensor.model.authorization.LoginRequest;
 import com.project.sensor.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")

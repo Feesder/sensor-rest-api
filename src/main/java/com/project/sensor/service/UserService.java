@@ -15,6 +15,8 @@ import com.project.sensor.repository.UserRepository;
 import com.project.sensor.security.JwtTokenProvider;
 import com.project.sensor.model.authorization.LoginResponse;
 import com.project.sensor.model.authorization.LoginRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,14 +24,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
 public class UserService {
+
+    public enum EToken {
+        ACCESS_TOKEN, REFRESH_TOKEN
+    }
+
     @Autowired
     private UserRepository userRepository;
 
@@ -60,9 +65,13 @@ public class UserService {
             user.getRoles().forEach(value -> roles.add(roleRepository.findByName(value.getName())));
         }
         user.setRoles(roles);
+        String accessToken = jwtTokenProvider.createAccessToken(user.getUser());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getUser());
+        setToken(accessToken, response, EToken.ACCESS_TOKEN);
+        setToken(refreshToken, response, EToken.REFRESH_TOKEN);
         return RegistrationResponse.toModel(userRepository.save(user),
-                jwtTokenProvider.createAccessToken(user.getUser(), response),
-                jwtTokenProvider.createRefreshToken(user.getUser(), response));
+                accessToken,
+                refreshToken);
     }
 
     public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) throws UserNotFoundException, WrongPasswordException {
@@ -80,9 +89,13 @@ public class UserService {
             throw new WrongPasswordException("Не верный пароль");
         }
 
+        String accessToken = jwtTokenProvider.createAccessToken(user.getUser());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getUser());
+        setToken(accessToken, response, EToken.ACCESS_TOKEN);
+        setToken(refreshToken, response, EToken.REFRESH_TOKEN);
         return LoginResponse.toModel(userRepository.save(user),
-                jwtTokenProvider.createAccessToken(user.getUser(), response),
-                jwtTokenProvider.createRefreshToken(user.getUser(), response));
+                accessToken,
+                refreshToken);
     }
 
     public User findById(Long id) throws UserNotFoundException {
@@ -102,9 +115,13 @@ public class UserService {
 
         String user = jwtTokenProvider.getUser(token);
         UserEntity userEntity = userRepository.findByUser(user);
+        String accessToken = jwtTokenProvider.createAccessToken(userEntity.getUser());
+        String refreshToken = jwtTokenProvider.createRefreshToken(userEntity.getUser());
+        setToken(accessToken, response, EToken.ACCESS_TOKEN);
+        setToken(refreshToken, response, EToken.REFRESH_TOKEN);
         return JwtTokenResponse.toModel(userEntity,
-                jwtTokenProvider.createAccessToken(userEntity.getUser(), response),
-                jwtTokenProvider.createRefreshToken(userEntity.getUser(), response));
+                accessToken,
+                refreshToken);
     }
 
     public UserEntity findByUser(String user) throws UserNotFoundException {
@@ -139,5 +156,25 @@ public class UserService {
 
         httpServletResponse.addCookie(authCookie);
         httpServletResponse.addCookie(refreshCookie);
+    }
+
+    public void setToken(String token, HttpServletResponse http, EToken eToken) {
+        Cookie cookie = getToken(token, eToken);
+        cookie.setPath(jwtTokenProvider.getCookiePath());
+        cookie.setHttpOnly(true);
+        cookie.setAttribute("SameSite", "strict");
+        http.addCookie(cookie);
+    }
+
+    private Cookie getToken(String token, EToken eToken) {
+        Cookie cookie;
+        if(eToken.equals(EToken.REFRESH_TOKEN)) {
+            cookie = new Cookie(jwtTokenProvider.getRefreshCookieName(), token);
+            cookie.setMaxAge(jwtTokenProvider.getRefreshExpirationCookie());
+        } else {
+            cookie = new Cookie(jwtTokenProvider.getAccessCookieName(), token);
+            cookie.setMaxAge(jwtTokenProvider.getAccessExpirationCookie());
+        }
+        return cookie;
     }
 }
