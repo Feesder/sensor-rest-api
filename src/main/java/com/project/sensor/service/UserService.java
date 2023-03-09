@@ -162,12 +162,12 @@ public class UserService {
         if(eToken.equals(EToken.REFRESH_TOKEN)) {
             http.addHeader(
                     "Set-Cookie",
-                    "REFRESH-TOKEN=" + token + "; HttpOnly; SameSite=None; Max-Age=" + jwtTokenProvider.getRefreshExpirationCookie()
+                    "REFRESH-TOKEN=" + token + "; HttpOnly; SameSite=Strict; Max-Age=" + jwtTokenProvider.getRefreshExpirationCookie()
                     );
         } else {
             http.addHeader(
                     "Set-Cookie",
-                    "ACCESS-TOKEN=" + token + "; HttpOnly; SameSite=None; Max-Age=" + jwtTokenProvider.getAccessExpirationCookie()
+                    "ACCESS-TOKEN=" + token + "; HttpOnly; SameSite=Strict; Max-Age=" + jwtTokenProvider.getAccessExpirationCookie()
             );
         }
     }
