@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -107,7 +106,7 @@ public class JwtTokenProvider {
         Cookie cookie = getToken(token, eToken);
         cookie.setPath(getCookiePath());
         cookie.setHttpOnly(true);
-        http.setHeader("Set-Cookie", "promo_shown=1; SameSite=Strict");
+        cookie.setComment("Strict");
         http.addCookie(cookie);
     }
 
