@@ -160,12 +160,12 @@ public class UserService {
 
     public void setToken(String token, HttpServletResponse http, EToken eToken) {
         if(eToken.equals(EToken.REFRESH_TOKEN)) {
-            http.setHeader(
+            http.addHeader(
                     "Set-Cookie",
                     "REFRESH-TOKEN=" + token + "; HttpOnly; SameSite=strict"
                     );
         } else {
-            http.setHeader(
+            http.addHeader(
                     "Set-Cookie",
                     "ACCESS-TOKEN=" + token + "; HttpOnly; SameSite=strict"
             );
