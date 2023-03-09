@@ -15,8 +15,6 @@ import com.project.sensor.repository.UserRepository;
 import com.project.sensor.security.JwtTokenProvider;
 import com.project.sensor.model.authorization.LoginResponse;
 import com.project.sensor.model.authorization.LoginRequest;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,22 +159,16 @@ public class UserService {
     }
 
     public void setToken(String token, HttpServletResponse http, EToken eToken) {
-        Cookie cookie = getToken(token, eToken);
-        cookie.setPath(jwtTokenProvider.getCookiePath());
-        cookie.setHttpOnly(true);
-        cookie.setAttribute("SameSite", "strict");
-        http.addCookie(cookie);
-    }
-
-    private Cookie getToken(String token, EToken eToken) {
-        Cookie cookie;
         if(eToken.equals(EToken.REFRESH_TOKEN)) {
-            cookie = new Cookie(jwtTokenProvider.getRefreshCookieName(), token);
-            cookie.setMaxAge(jwtTokenProvider.getRefreshExpirationCookie());
+            http.setHeader(
+                    "Set-Cookie",
+                    "REFRESH-TOKEN=" + token + "; HttpOnly; SameSite=strict"
+                    );
         } else {
-            cookie = new Cookie(jwtTokenProvider.getAccessCookieName(), token);
-            cookie.setMaxAge(jwtTokenProvider.getAccessExpirationCookie());
+            http.setHeader(
+                    "Set-Cookie",
+                    "ACCESS-TOKEN=" + token + "; HttpOnly; SameSite=strict"
+            );
         }
-        return cookie;
     }
 }
