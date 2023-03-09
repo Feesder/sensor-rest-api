@@ -43,10 +43,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/refresh/{value}")
-    public ResponseEntity getUserByRefresh(@PathVariable String value, HttpServletResponse response) {
+    @GetMapping(value = "/refresh", params = {"refreshToken"})
+    public ResponseEntity getUserByRefresh(@RequestParam String refreshToken, HttpServletResponse response) {
         try {
-            return ResponseEntity.ok().body(userService.findByToken(value, response));
+            return ResponseEntity.ok().body(userService.findByToken(refreshToken, response));
         } catch(TokenNotExist e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
