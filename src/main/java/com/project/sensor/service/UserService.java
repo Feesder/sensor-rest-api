@@ -65,8 +65,8 @@ public class UserService {
             user.getRoles().forEach(value -> roles.add(roleRepository.findByName(value.getName())));
         }
         user.setRoles(roles);
-        String accessToken = jwtTokenProvider.createAccessToken(user.getUser());
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.getUser());
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
         setToken(accessToken, response, EToken.ACCESS_TOKEN);
         setToken(refreshToken, response, EToken.REFRESH_TOKEN);
         return RegistrationResponse.toModel(userRepository.save(user),

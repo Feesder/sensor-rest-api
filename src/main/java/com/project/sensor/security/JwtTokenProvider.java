@@ -1,6 +1,7 @@
 package com.project.sensor.security;
 
 import com.project.sensor.entity.RoleEntity;
+import com.project.sensor.entity.UserEntity;
 import com.project.sensor.exception.AuthException;
 import com.project.sensor.repository.UserRepository;
 import com.project.sensor.service.UserService;
@@ -84,6 +85,36 @@ public class JwtTokenProvider {
     public String createRefreshToken(String user) {
         Claims claims = Jwts.claims().setSubject(user);
         claims.put("roles", getRoleNames(userRepository.findByUser(user).getRoles()));
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshExpirationCookie);
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        return token;
+    }
+
+    public String createAccessToken(UserEntity user) {
+        Claims claims = Jwts.claims().setSubject(user.getUser());
+        claims.put("roles", getRoleNames(user.getRoles()));
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + accessExpirationCookie);
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        return token;
+    }
+
+    public String createRefreshToken(UserEntity user) {
+        Claims claims = Jwts.claims().setSubject(user.getUser());
+        claims.put("roles", getRoleNames(user.getRoles()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + refreshExpirationCookie);
         String token = Jwts.builder()
