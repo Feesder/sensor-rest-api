@@ -25,12 +25,12 @@ public class DeviceService {
     @Autowired
     private UserRepository userRepository;
 
-    public Device addDevice(DeviceEntity deviceEntity, Long userId, Long placeId) {
+    public DeviceEntity addDevice(DeviceEntity deviceEntity, Long userId, Long placeId) {
         UserEntity user = userRepository.findById(userId).get();
         PlaceEntity place = placeRepository.findById(placeId).get();
         deviceEntity.setUser(user);
         deviceEntity.setPlace(place);
-        return Device.toModel(deviceRepository.save(deviceEntity));
+        return deviceRepository.save(deviceEntity);
     }
 
     public Device getDevice(Long id) {
