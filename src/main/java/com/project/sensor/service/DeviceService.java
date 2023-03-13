@@ -25,12 +25,13 @@ public class DeviceService {
     @Autowired
     private UserRepository userRepository;
 
-    public DeviceEntity addDevice(DeviceEntity deviceEntity, Long userId, Long placeId) {
+    public String addDevice(DeviceEntity deviceEntity, Long userId, Long placeId) {
         UserEntity user = userRepository.findById(userId).get();
         PlaceEntity place = placeRepository.findById(placeId).get();
         deviceEntity.setUser(user);
         deviceEntity.setPlace(place);
-        return deviceRepository.save(deviceEntity);
+        deviceRepository.save(deviceEntity);
+        return "Утройство создано";
     }
 
     public Device getDevice(Long id) {
