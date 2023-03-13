@@ -29,7 +29,7 @@ public class DeviceController {
         try {
             return ResponseEntity.ok().body(deviceService.getDevice(id));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Такое устройство не существует");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -38,7 +38,7 @@ public class DeviceController {
         try {
             return ResponseEntity.ok().body(deviceService.getAllDevice());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Такое устройство не существует");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
