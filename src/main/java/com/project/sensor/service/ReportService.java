@@ -31,6 +31,7 @@ public class ReportService {
         }
         reportEntity.setDevice(deviceEntity);
         reportEntity.setDate(new Timestamp(System.currentTimeMillis()));
+        reportRepository.save(reportEntity);
         return "Отчёт создан";
     }
 
