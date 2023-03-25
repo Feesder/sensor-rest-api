@@ -14,14 +14,13 @@ import java.util.List;
 
 public class Report {
     private Long id;
-    @JsonIgnore
-    private DeviceEntity device;
+    private Device device;
     private Integer temperature;
     private Integer gas;
     private Integer damp;
     private Timestamp date;
 
-    public Report(Long id, DeviceEntity device, Integer temperature, Integer gas, Integer damp, Timestamp date) {
+    public Report(Long id, Device device, Integer temperature, Integer gas, Integer damp, Timestamp date) {
         this.id = id;
         this.device = device;
         this.temperature = temperature;
@@ -32,9 +31,13 @@ public class Report {
 
     public static Report toModel(ReportEntity report) {
         return new Report(
-                report.getId(), report.getDevice(), report.getTemperature(),
+                report.getId(), generateToDeviceModel(report.getDevice()), report.getTemperature(),
                 report.getGas(), report.getDamp(), report.getDate()
         );
+    }
+
+    private static Device generateToDeviceModel(DeviceEntity deviceEntity) {
+        return Device.toModel(deviceEntity);
     }
 
     public static List<ReportEntity> toModel(Iterator<ReportEntity> reports) {
