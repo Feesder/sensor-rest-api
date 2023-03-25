@@ -41,7 +41,6 @@ public class DeviceService {
     public List<Device> getAllDevice() {
         ArrayList<Device> devices = new ArrayList<>();
         deviceRepository.findAll().forEach(value -> {
-            System.out.println(value);
            devices.add(Device.toModel(value));
         });
         return devices;
