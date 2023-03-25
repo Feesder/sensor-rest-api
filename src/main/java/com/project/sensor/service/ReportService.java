@@ -24,14 +24,14 @@ public class ReportService {
     @Autowired
     private DeviceRepository deviceRepository;
 
-    public ReportEntity addReport(ReportEntity reportEntity, Long deviceId) throws DeviceNotFoundException {
+    public String addReport(ReportEntity reportEntity, Long deviceId) throws DeviceNotFoundException {
         DeviceEntity deviceEntity = deviceRepository.findById(deviceId).get();
         if(deviceEntity.getId() == null) {
             throw new DeviceNotFoundException("Устройство не найдено");
         }
         reportEntity.setDevice(deviceEntity);
         reportEntity.setDate(new Timestamp(System.currentTimeMillis()));
-        return reportRepository.save(reportEntity);
+        return "Отчёт создан";
     }
 
     public List<ReportEntity> getReportAll() {
