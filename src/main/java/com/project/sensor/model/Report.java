@@ -63,11 +63,11 @@ public class Report {
         this.id = id;
     }
 
-    public DeviceEntity getDevice() {
+    public Device getDevice() {
         return device;
     }
 
-    public void setDevice(DeviceEntity device) {
+    public void setDevice(Device device) {
         this.device = device;
     }
 
