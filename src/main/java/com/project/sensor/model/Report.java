@@ -40,10 +40,10 @@ public class Report {
         return Device.toModel(deviceEntity);
     }
 
-    public static List<ReportEntity> toModel(Iterator<ReportEntity> reports) {
-        ArrayList<ReportEntity> reportList = new ArrayList<>();
+    public static List<Report> toModel(Iterator<ReportEntity> reports) {
+        ArrayList<Report> reportList = new ArrayList<>();
         while(reports.hasNext()) {
-            reportList.add(reports.next());
+            reportList.add(Report.toModel(reports.next()));
         }
         reportList.sort((i, j) -> j.getDate().compareTo(i.getDate()));
         return reportList;

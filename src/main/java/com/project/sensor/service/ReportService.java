@@ -30,12 +30,11 @@ public class ReportService {
             throw new DeviceNotFoundException("Устройство не найдено");
         }
         reportEntity.setDevice(deviceEntity);
-        reportEntity.setDate(new Timestamp(System.currentTimeMillis()));
         reportRepository.save(reportEntity);
         return "Отчёт создан";
     }
 
-    public List<ReportEntity> getReportAll() {
+    public List<Report> getReportAll() {
         return Report.toModel(reportRepository.findAll().iterator());
     }
 

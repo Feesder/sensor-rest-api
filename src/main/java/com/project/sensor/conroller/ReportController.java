@@ -7,6 +7,8 @@ import com.project.sensor.service.ReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+
 @RestController
 @RequestMapping("/report")
 public class ReportController {
@@ -23,15 +25,16 @@ public class ReportController {
         }
     }
 
-    @GetMapping(params = { "deviceId", "temperature", "gas", "damp" })
+    @GetMapping(params = { "deviceId", "temperature", "gas", "damp", "date" })
     public ResponseEntity addReport(
             @RequestParam Long deviceId,
             @RequestParam Integer temperature,
             @RequestParam Integer gas,
-            @RequestParam Integer damp
+            @RequestParam Integer damp,
+            @RequestParam long date
             ) {
         try {
-            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp), deviceId));
+            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, new Timestamp(date)), deviceId));
         } catch(DeviceNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {

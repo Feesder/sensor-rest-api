@@ -27,10 +27,11 @@ public class ReportEntity {
     @Column(name = "date")
     private Timestamp date;
 
-    public ReportEntity(Integer temperature, Integer gas, Integer damp) {
+    public ReportEntity(Integer temperature, Integer gas, Integer damp, Timestamp date) {
         this.temperature = temperature;
         this.gas = gas;
         this.damp = damp;
+        this.date = date;
     }
 
     public ReportEntity() {}
