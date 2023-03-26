@@ -112,4 +112,12 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public List<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<Device> devices) {
+        this.devices = devices;
+    }
 }
