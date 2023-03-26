@@ -37,10 +37,13 @@ public class Report {
     }
 
     public static Device deviceToModel(DeviceEntity deviceEntity) {
-        Device device = Device.toModel(deviceEntity);
-        device.setReport(null);
-        device.setUser(null);
-        return device;
+        return new Device(
+                deviceEntity.getId(),
+                deviceEntity.getActive(),
+                null,
+                Place.toModel(deviceEntity.getPlace()),
+                null
+        );
     }
 
     public static List<Report> toModel(Iterator<ReportEntity> reports) {
