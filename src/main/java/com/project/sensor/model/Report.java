@@ -101,4 +101,11 @@ public class Report {
         this.date = date;
     }
 
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
 }
