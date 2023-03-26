@@ -56,7 +56,11 @@ public class Report {
     }
 
 
-    public static List<ReportEntity> toModel(List<ReportEntity> reportList) {
+    public static List<Report> toModel(List<ReportEntity> reports) {
+        ArrayList<Report> reportList = new ArrayList<>();
+        reports.forEach(value -> {
+            reportList.add(toModel(value));
+        });
         reportList.sort((i, j) -> j.getDate().compareTo(i.getDate()));
         return reportList;
     }
