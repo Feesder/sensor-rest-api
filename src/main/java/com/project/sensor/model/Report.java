@@ -14,23 +14,25 @@ import java.util.List;
 
 public class Report {
     private Long id;
+    private Long deviceId;
     private Integer temperature;
     private Integer gas;
     private Integer damp;
     private Timestamp date;
 
-    public Report(Long id, Integer temperature, Integer gas, Integer damp, Timestamp date) {
+    public Report(Long id, Integer temperature, Integer gas, Integer damp, Timestamp date, Long deviceId) {
         this.id = id;
         this.temperature = temperature;
         this.gas = gas;
         this.damp = damp;
         this.date = date;
+        this.deviceId = deviceId;
     }
 
     public static Report toModel(ReportEntity report) {
         return new Report(
                 report.getId(), report.getTemperature(),
-                report.getGas(), report.getDamp(), report.getDate()
+                report.getGas(), report.getDamp(), report.getDate(), report.getDevice().getId()
         );
     }
 
@@ -87,5 +89,13 @@ public class Report {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public Long getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
     }
 }
