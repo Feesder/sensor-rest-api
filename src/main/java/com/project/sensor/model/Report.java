@@ -1,16 +1,13 @@
 package com.project.sensor.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.sensor.entity.DeviceEntity;
 import com.project.sensor.entity.ReportEntity;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Report {
     private Long id;

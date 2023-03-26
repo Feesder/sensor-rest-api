@@ -31,10 +31,10 @@ public class ReportController {
             @RequestParam Integer temperature,
             @RequestParam Integer gas,
             @RequestParam Integer damp,
-            @RequestParam long date
+            @RequestParam String date
             ) {
         try {
-            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, new Timestamp(date)), deviceId));
+            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, Timestamp.valueOf(date)), deviceId));
         } catch(DeviceNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
