@@ -15,9 +15,8 @@ public class User {
     private String surname;
     private String phone;
     private List<String> roles;
-    private List<Device> devices;
 
-    public User(Long id, String user, String email, String name, String surname, String phone, List<Device> devices, List<String> roles) {
+    public User(Long id, String user, String email, String name, String surname, String phone, List<String> roles) {
         this.id = id;
         this.user = user;
         this.email = email;
@@ -25,7 +24,6 @@ public class User {
         this.surname = surname;
         this.roles = roles;
         this.phone = phone;
-        this.devices = devices;
     }
 
     public User(Long id, String user, String email, String name, String surname) {
@@ -44,18 +42,12 @@ public class User {
                 userEntity.getName(),
                 userEntity.getSurname(),
                 userEntity.getPhone(),
-                mapToDevices(userEntity.getDevices()),
                 mapToGrantedAuthorities(userEntity.getRoles())
         );
     }
 
     public static List<String> mapToGrantedAuthorities(List<RoleEntity> userRoles) {
         return userRoles.stream().map(RoleEntity::getName).collect(Collectors.toList());
-    }
-
-    public static List<Device> mapToDevices(List<DeviceEntity> deviceEntities) {
-        System.out.println(deviceEntities);
-        return deviceEntities.stream().map(Device::toModel).collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -112,13 +104,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public List<Device> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
     }
 }

@@ -100,8 +100,6 @@ public class UserService {
 
     public User findById(Long id) throws UserNotFoundException {
         UserEntity user = userRepository.findById(id).get();
-
-
         if(user == null) {
             throw new UserNotFoundException("Пользователь не найден");
         }
