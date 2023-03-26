@@ -38,7 +38,7 @@ public class ReportService {
         return Report.toModel(reportRepository.findAll().iterator());
     }
 
-    public List<ReportEntity> getReportById(Long id) {
+    public List<Report> getReportById(Long id) {
         return Report.toModel(reportRepository.findReportEntitiesByDeviceId(id));
     }
 
