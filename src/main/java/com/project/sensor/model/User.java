@@ -54,6 +54,7 @@ public class User {
     }
 
     public static List<Device> mapToDevices(List<DeviceEntity> deviceEntities) {
+        System.out.println(deviceEntities);
         return deviceEntities.stream().map(Device::toModel).collect(Collectors.toList());
     }
 
