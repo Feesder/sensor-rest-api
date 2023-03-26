@@ -14,15 +14,13 @@ import java.util.List;
 
 public class Report {
     private Long id;
-    private Device device;
     private Integer temperature;
     private Integer gas;
     private Integer damp;
     private Timestamp date;
 
-    public Report(Long id, Device device, Integer temperature, Integer gas, Integer damp, Timestamp date) {
+    public Report(Long id, Integer temperature, Integer gas, Integer damp, Timestamp date) {
         this.id = id;
-        this.device = device;
         this.temperature = temperature;
         this.gas = gas;
         this.damp = damp;
@@ -31,13 +29,9 @@ public class Report {
 
     public static Report toModel(ReportEntity report) {
         return new Report(
-                report.getId(), generateToDeviceModel(report.getDevice()), report.getTemperature(),
+                report.getId(), report.getTemperature(),
                 report.getGas(), report.getDamp(), report.getDate()
         );
-    }
-
-    private static Device generateToDeviceModel(DeviceEntity deviceEntity) {
-        return Device.toModel(deviceEntity);
     }
 
     public static List<Report> toModel(Iterator<ReportEntity> reports) {
@@ -61,14 +55,6 @@ public class Report {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
     }
 
     public Integer getTemperature() {
