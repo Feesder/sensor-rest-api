@@ -15,9 +15,9 @@ public class User {
     private String surname;
     private String phone;
     private List<String> roles;
-    private List<DeviceEntity> devices;
+    private List<Device> devices;
 
-    public User(Long id, String user, String email, String name, String surname, String phone, List<DeviceEntity> devices, List<String> roles) {
+    public User(Long id, String user, String email, String name, String surname, String phone, List<Device> devices, List<String> roles) {
         this.id = id;
         this.user = user;
         this.email = email;
@@ -44,13 +44,17 @@ public class User {
                 userEntity.getName(),
                 userEntity.getSurname(),
                 userEntity.getPhone(),
-                userEntity.getDevices(),
+                mapToDevices(userEntity.getDevices()),
                 mapToGrantedAuthorities(userEntity.getRoles())
         );
     }
 
     public static List<String> mapToGrantedAuthorities(List<RoleEntity> userRoles) {
         return userRoles.stream().map(RoleEntity::getName).collect(Collectors.toList());
+    }
+
+    public static List<Device> mapToDevices(List<DeviceEntity> deviceEntities) {
+        return deviceEntities.stream().map(Device::toModel).collect(Collectors.toList());
     }
 
     public Long getId() {
