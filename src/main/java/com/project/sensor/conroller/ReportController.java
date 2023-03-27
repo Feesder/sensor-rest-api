@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @RestController
@@ -36,9 +38,9 @@ public class ReportController {
             @RequestParam String date
             ) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date parsedDate = dateFormat.parse(date);
-            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, new Timestamp(parsedDate.getTime())), deviceId));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, Timestamp.valueOf(dateTime)), deviceId));
         } catch(DeviceNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
