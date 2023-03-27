@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/report")
@@ -34,7 +36,9 @@ public class ReportController {
             @RequestParam String date
             ) {
         try {
-            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, Timestamp.valueOf(date)), deviceId));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date parsedDate = dateFormat.parse(date);
+            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, new Timestamp(parsedDate.getTime())), deviceId));
         } catch(DeviceNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
