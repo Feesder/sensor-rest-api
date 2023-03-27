@@ -34,9 +34,7 @@ public class ReportController {
             @RequestParam String date
             ) {
         try {
-            Timestamp timestamp = Timestamp.valueOf(date);
-            timestamp.setNanos(0);
-            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, timestamp), deviceId));
+            return ResponseEntity.ok().body(reportService.addReport(new ReportEntity(temperature, gas, damp, Timestamp.valueOf(date)), deviceId));
         } catch(DeviceNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
@@ -47,6 +45,7 @@ public class ReportController {
     @GetMapping(params = { "deviceId" })
     public ResponseEntity getReport(@RequestParam Long deviceId) {
         try {
+            System.out.println();
             return ResponseEntity.ok().body(reportService.getReportById(deviceId));
         } catch(Exception e) {
             return ResponseEntity.badRequest().body(e);
