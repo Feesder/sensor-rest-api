@@ -44,21 +44,20 @@ public class Report {
     }
 
     public static List<Report> toModel(Iterator<ReportEntity> reports) {
-        ArrayList<Report> reportList = new ArrayList<>();
-        while(reports.hasNext()) {
-            reportList.add(Report.toModel(reports.next()));
-        }
-        reportList.sort((i, j) -> j.getDate().compareTo(i.getDate()));
-        return reportList;
+        return sortReports(reports);
     }
 
 
     public static List<Report> toModel(List<ReportEntity> reports) {
+        return sortReports(reports.stream().iterator());
+    }
+
+    public static List<Report> sortReports(Iterator<ReportEntity> reports) {
         ArrayList<Report> reportList = new ArrayList<>();
-        reports.forEach(value -> {
-            reportList.add(toModel(value));
-        });
-        reportList.sort((i, j) -> j.getDate().compareTo(i.getDate()));
+        while(reports.hasNext()) {
+            reportList.add(Report.toModel(reports.next()));
+        }
+        reportList.sort((i, j) -> j.getId().compareTo(i.getId()));
         return reportList;
     }
 
