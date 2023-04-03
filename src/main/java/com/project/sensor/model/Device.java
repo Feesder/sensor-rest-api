@@ -35,7 +35,7 @@ public class Device {
     }
 
     public static List<Report> mapToReport(List<ReportEntity> reports) {
-        return reports.stream().map(Report::toModel).collect(Collectors.toList());
+        return Report.toModel(reports);
     }
 
     public Long getId() {
